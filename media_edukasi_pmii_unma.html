@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Edukasi & Rekrutmen PMII UNMA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100dvh;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        @media (min-width: 640px) {
+            .app-container {
+                height: 90vh;
+                border-radius: 24px;
+            }
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            z-index: 10;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px 24px 0 0;
+            flex: 1;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            color: #1f2937;
+        }
+
+        @media (min-width: 640px) {
+            .card { border-radius: 24px; margin: 0 16px 16px 16px; height: calc(100% - 100px); flex: none;}
+        }
+
+        .btn-primary {
+            background-color: #fbbf24;
+            color: #78350f;
+            font-weight: 600;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(251, 191, 36, 0.4);
+        }
+
+        .btn-primary:hover {
+            background-color: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px -1px rgba(251, 191, 36, 0.5);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .btn-outline {
+            border: 2px solid #fbbf24;
+            color: #fbbf24;
+            font-weight: 600;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(251, 191, 36, 0.1);
+        }
+
+        .slide-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .menu-card {
+            transition: all 0.3s ease;
+        }
+        .menu-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-option {
+            transition: all 0.2s ease;
+            border: 2px solid #e5e7eb;
+        }
+        .quiz-option:hover {
+            border-color: #60a5fa;
+            background-color: #eff6ff;
+        }
+        .quiz-option.selected {
+            border-color: #3b82f6;
+            background-color: #dbeafe;
+        }
+
+        /* Animasi Elemen Latar (Floating Shapes) */
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(25px, -35px) scale(1.1); }
+            66% { transform: translate(-25px, 25px) scale(0.9); }
+        }
+        
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(25px);
+            z-index: 1;
+            opacity: 0.4;
+            animation: float 15s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Elemen Latar Bergerak (Floating Ornaments) -->
+        <div class="floating-shape bg-yellow-400 w-48 h-48 -top-12 -left-12" style="animation-delay: 0s; animation-duration: 14s;"></div>
+        <div class="floating-shape bg-blue-400 w-64 h-64 top-1/4 -right-24" style="animation-delay: -5s; animation-duration: 18s;"></div>
+        <div class="floating-shape bg-yellow-300 w-56 h-56 top-2/3 -left-20" style="animation-delay: -10s; animation-duration: 16s;"></div>
+        <div class="floating-shape bg-blue-300 w-40 h-40 bottom-0 -right-10" style="animation-delay: -2s; animation-duration: 12s;"></div>
+
+        <!-- Fitur Audio & Tombol Musik -->
+        <audio id="bgMusic" loop preload="auto" autoplay>
+            <source src="https://storage.nu.or.id/storage/archive/1576554507.mp3" type="audio/mpeg">
+        </audio>
+        
+        <button id="musicToggleBtn" onclick="toggleMusic()" class="absolute top-6 right-16 z-50 w-10 h-10 bg-black/20 backdrop-blur-sm border border-white/30 text-white rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110">
+            <i id="musicIcon" class="fa-solid fa-music"></i>
+        </button>
+        
+        <!-- Screen 1: Home / Landing -->
+        <div id="screen-home" class="screen active text-white p-6 justify-center items-center text-center">
+            <div class="w-28 h-28 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg mx-auto p-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Logo_PMII.png" alt="Logo PMII" class="w-full h-full object-contain drop-shadow-md">
+            </div>
+            <h1 class="text-3xl font-bold mb-2">Selamat Datang, Maba!</h1>
+            <p class="text-blue-200 mb-8 text-sm">Eksplorasi potensimu dan kenali lebih jauh tentang pergerakan mahasiswa bersama PMII Komisariat UNMA.</p>
+            
+            <button onclick="navigate('menu')" class="btn-primary w-full py-4 text-lg mt-auto sm:mt-8">
+                Mulai Belajar <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+
+        <!-- Screen 2: Main Menu -->
+        <div id="screen-menu" class="screen">
+            <div class="pt-8 pb-6 px-6 text-white">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-2xl font-bold">Pilih Modul</h2>
+                    <button onclick="navigate('home')" class="text-blue-200 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <p class="text-sm text-blue-200">Silakan pelajari materi yang telah kami siapkan khusus untukmu.</p>
+            </div>
+            
+            <div class="card p-6 pb-24">
+                <!-- Modul 1 -->
+                <div onclick="openModule('waktu')" class="menu-card bg-blue-50 rounded-2xl p-4 mb-4 flex items-center cursor-pointer border border-blue-100">
+                    <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white mr-4 flex-shrink-0">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-blue-900">Tips Manajemen Waktu</h3>
+                        <p class="text-xs text-gray-600">3 Slide • Tips agar tidak keteteran</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-400 ml-auto"></i>
+                </div>
+
+                <!-- Modul 2 -->
+                <div onclick="openModule('starter')" class="menu-card bg-yellow-50 rounded-2xl p-4 mb-4 flex items-center cursor-pointer border border-yellow-100">
+                    <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-yellow-900 mr-4 flex-shrink-0">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-yellow-900">Starter Pack Maba</h3>
+                        <p class="text-xs text-gray-600">4 Slide • Tools & Referensi penting</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-400 ml-auto"></i>
+                </div>
+
+                <!-- Modul 3 -->
+                <div onclick="openModule('pmii')" class="menu-card bg-blue-900 rounded-2xl p-4 mb-4 flex items-center cursor-pointer shadow-md">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center p-1 mr-4 flex-shrink-0">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Logo_PMII.png" alt="Logo PMII" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white">Tentang Kami (PMII)</h3>
+                        <p class="text-xs text-blue-200">5 Slide • + Kuis Potensi Diri</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-blue-200 ml-auto"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Module Viewer -->
+        <div id="screen-module" class="screen">
+            <div class="pt-8 pb-4 px-6 text-white flex items-center justify-between">
+                <button onclick="navigate('menu')" class="text-white bg-blue-800 w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div id="module-progress" class="flex gap-1">
+                    <!-- Progress dots injected here -->
+                </div>
+                <div class="w-10"></div> <!-- Spacer for centering -->
+            </div>
+
+            <div class="card flex flex-col relative">
+                <!-- Module Content injected here via JS -->
+                <div id="module-content-container" class="flex-1 overflow-y-auto p-6 pb-32"></div>
+
+                <!-- Controls -->
+                <div class="absolute bottom-0 left-0 w-full p-4 bg-white border-t border-gray-100 flex gap-4">
+                    <button id="btn-prev" onclick="prevSlide()" class="hidden flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition">
+                        Kembali
+                    </button>
+                    <button id="btn-next" onclick="nextSlide()" class="flex-1 py-3 btn-primary rounded-xl font-semibold transition">
+                        Selanjutnya
+                    </button>
+                    <button id="btn-finish" onclick="finishModule()" class="hidden flex-1 py-3 btn-primary rounded-xl font-semibold transition">
+                        Selesai
+                    </button>
+                    <button id="btn-quiz" onclick="startQuiz()" class="hidden flex-1 py-3 btn-primary rounded-xl font-semibold transition">
+                        Mulai Kuis
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 4: Quiz -->
+        <div id="screen-quiz" class="screen bg-white">
+            <div class="h-2 w-full bg-gray-200">
+                <div id="quiz-progress-bar" class="h-full bg-yellow-400 transition-all duration-300" style="width: 20%;"></div>
+            </div>
+            
+            <div class="p-6 flex flex-col h-full overflow-y-auto pb-24">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-sm font-bold text-blue-600" id="quiz-counter">Pertanyaan 1/5</span>
+                    <button onclick="navigate('menu')" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <h2 id="quiz-question" class="text-xl font-bold text-gray-800 mb-6 leading-relaxed">Pertanyaan</h2>
+
+                <div id="quiz-options" class="flex flex-col gap-3">
+                    <!-- Options injected here -->
+                </div>
+
+                <div class="mt-auto pt-8">
+                    <button id="btn-quiz-next" onclick="nextQuiz()" class="w-full py-4 btn-primary rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Lanjut
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 5: Quiz Result -->
+        <div id="screen-result" class="screen bg-blue-900 text-white p-6 flex flex-col justify-center items-center text-center">
+            <div class="w-32 h-32 sm:w-36 sm:h-36 bg-white rounded-full flex items-center justify-center mb-6 border-4 border-yellow-400 mx-auto shadow-[0_0_30px_rgba(251,191,36,0.3)] p-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Logo_PMII.png" alt="Logo PMII" class="w-full h-full object-contain drop-shadow-md">
+            </div>
+            
+            <h2 class="text-2xl sm:text-3xl font-bold mb-3 text-yellow-400">Potensimu Luar Biasa!</h2>
+            <p class="text-sm sm:text-base text-blue-100 mb-6 leading-relaxed">
+                Dari refleksimu, terlihat bahwa kamu memiliki jiwa pergerakan dan semangat belajar yang tinggi. 
+                <br><br>
+                <b>PMII Komisariat Universitas Mathla'ul Anwar</b> adalah ruang yang tepat untuk mengasah kepemimpinan, intelektualitas, dan jaringanmu. Mari berproses bersama!
+            </p>
+
+            <div class="w-full flex flex-col gap-3 mt-auto">
+                <button onclick="startQuiz()" class="w-full py-3 btn-outline rounded-xl font-semibold bg-transparent flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-right flex-shrink-0"></i> 
+                    <span>Ulangi Kuis</span>
+                </button>
+                <a href="https://www.instagram.com/pmiiunma?stkn=Mmw2ODB1YzI5NXhq" target="_blank" class="w-full py-3 px-4 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg transition-transform hover:-translate-y-1">
+                    <i class="fa-brands fa-instagram text-xl flex-shrink-0"></i> 
+                    <span>Follow Instagram Kami</span>
+                </a>
+                <a href="https://wa.me/qr/EPOT2ACN77FBC1" target="_blank" class="w-full py-3 px-4 btn-primary rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2 text-yellow-900 no-underline text-center shadow-lg transition-transform hover:-translate-y-1">
+                    <i class="fa-brands fa-whatsapp text-xl flex-shrink-0"></i> 
+                    <span>Gabung PMII UNMA</span>
+                </a>
+                <button onclick="navigate('home')" class="mt-1 text-sm text-blue-300 hover:text-white pb-2">Kembali ke Beranda</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Modul
+        const moduleData = {
+            waktu: [
+                {
+                    title: "Matriks Eisenhower",
+                    icon: "fa-list-check",
+                    color: "blue",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Tentukan Prioritasmu</h3>
+                        <p class="text-gray-600 mb-4">Sebagai mahasiswa baru, tugas dan kegiatan akan terasa menumpuk. Gunakan Matriks Eisenhower untuk membagi tugas:</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm text-center">
+                            <div class="bg-red-100 p-3 rounded-lg border border-red-200"><strong class="text-red-700">Penting & Mendesak:</strong><br>Kerjakan Sekarang!</div>
+                            <div class="bg-blue-100 p-3 rounded-lg border border-blue-200"><strong class="text-blue-700">Penting, Tidak Mendesak:</strong><br>Jadwalkan</div>
+                            <div class="bg-yellow-100 p-3 rounded-lg border border-yellow-200"><strong class="text-yellow-700">Tidak Penting, Mendesak:</strong><br>Delegasikan/Minta Tolong</div>
+                            <div class="bg-gray-100 p-3 rounded-lg border border-gray-200"><strong class="text-gray-700">Tidak Penting & Tidak Mendesak:</strong><br>Tinggalkan</div>
+                        </div>`
+                },
+                {
+                    title: "Teknik Pomodoro",
+                    icon: "fa-stopwatch",
+                    color: "red",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Fokus Tanpa Lelah</h3>
+                        <p class="text-gray-600 mb-4">Jangan paksakan belajar berjam-jam tanpa henti. Otak butuh istirahat!</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-500 mt-1 mr-3"></i> <span>Belajar fokus selama <strong>25 menit</strong>.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-500 mt-1 mr-3"></i> <span>Istirahat pendek <strong>5 menit</strong> (peregangan, minum).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-check text-green-500 mt-1 mr-3"></i> <span>Setelah 4 sesi, istirahat panjang <strong>15-30 menit</strong>.</span></li>
+                        </ul>`
+                },
+                {
+                    title: "Gunakan Tools Planner",
+                    icon: "fa-calendar-days",
+                    color: "yellow",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Catat Semua Jadwal</h3>
+                        <img src="https://placehold.co/400x200/eff6ff/1e3a8a?text=Calendar+Planner" alt="Calendar" class="w-full rounded-xl mb-4 shadow-sm border border-gray-200">
+                        <p class="text-gray-600 mb-4">Manusia tempatnya lupa. Segera catat jadwal kuliah, tugas, dan rapat organisasi di <strong>Google Calendar</strong> atau aplikasi Notes di HP-mu. Pasang reminder 1 hari sebelumnya!</p>`
+                }
+            ],
+            starter: [
+                {
+                    title: "Aplikasi Kuliah Wajib",
+                    icon: "fa-laptop-file",
+                    color: "blue",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Senjata Utama Maba</h3>
+                        <p class="text-gray-600 mb-4">Jangan sampai tugas hilang atau bingung nyatat materi. Wajib install/gunakan ini:</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl mr-4"><i class="fa-solid fa-file-word"></i></div>
+                                <div><h4 class="font-bold text-gray-800">Google Workspace / WPS</h4><p class="text-xs text-gray-500">Docs, Sheets, Slides. Sangat penting untuk nugas kelompok bareng secara online.</p></div>
+                            </div>
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center text-xl mr-4"><i class="fa-solid fa-book-bookmark"></i></div>
+                                <div><h4 class="font-bold text-gray-800">Notion</h4><p class="text-xs text-gray-500">Aplikasi catatan canggih untuk mengatur jadwal, to-do list, dan materi kuliah.</p></div>
+                            </div>
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-xl mr-4"><i class="fa-brands fa-google-drive"></i></div>
+                                <div><h4 class="font-bold text-gray-800">Google Drive</h4><p class="text-xs text-gray-500">Simpan semua file tugas di sini (Cloud). Anti nangis karena flashdisk hilang/rusak!</p></div>
+                            </div>
+                        </div>`
+                },
+                {
+                    title: "Software Desain & Editing",
+                    icon: "fa-wand-magic-sparkles",
+                    color: "purple",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Kreativitas Mahasiswa</h3>
+                        <p class="text-gray-600 mb-4">Skill editing dasar sangat berguna untuk tugas presentasi maupun organisasi:</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl mr-4"><i class="fa-solid fa-paintbrush"></i></div>
+                                <div><h4 class="font-bold text-gray-800">Canva</h4><p class="text-xs text-gray-500">Bikin PPT presentasi auto-keren. Bisa dapat Canva Pro gratis pakai email kampus (.ac.id).</p></div>
+                            </div>
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div class="w-10 h-10 bg-black text-white rounded-lg flex items-center justify-center text-xl mr-4"><i class="fa-solid fa-video"></i></div>
+                                <div><h4 class="font-bold text-gray-800">CapCut</h4><p class="text-xs text-gray-500">Video editor HP/PC paling mudah untuk tugas vlog atau dokumentasi acara kampus.</p></div>
+                            </div>
+                        </div>`
+                },
+                {
+                    title: "Tools Riset & AI",
+                    icon: "fa-book-open-reader",
+                    color: "green",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Hack Tugas Makalah</h3>
+                        <p class="text-gray-600 mb-4">Senjata rahasia agar tugas makalah dan jurnalmu cepat selesai namun tetap berkualitas:</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><i class="fa-solid fa-quote-right text-blue-500 mt-1 mr-3"></i> <span><strong>Mendeley / Zotero:</strong> Aplikasi wajib untuk membuat daftar pustaka dan sitasi otomatis anti ribet.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-magnifying-glass text-blue-500 mt-1 mr-3"></i> <span><strong>Google Scholar / Perpusnas:</strong> Tempat mencari jurnal rujukan gratis dan terpercaya.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-robot text-blue-500 mt-1 mr-3"></i> <span><strong>Perplexity / ChatGPT:</strong> Gunakan sebagai <em>asisten brainstorming</em> atau merangkum konsep panjang, <strong>bukan untuk copy-paste!</strong></span></li>
+                        </ul>`
+                },
+                {
+                    title: "Playlist Belajar & Skill",
+                    icon: "fa-youtube",
+                    color: "red",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Kembangkan Soft Skill</h3>
+                        <p class="text-gray-600 mb-4">Waktu luang? Yuk tingkatkan kualitas diri melalui channel edukatif:</p>
+                        <div class="bg-red-50 border border-red-100 p-4 rounded-xl">
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li>📺 <strong>Satu Persen:</strong> Psikologi, Self-awareness & Manajemen Stres</li>
+                                <li>📺 <strong>Kok Bisa?:</strong> Pengetahuan Umum Edukatif</li>
+                                <li>📺 <strong>Tutorial Software:</strong> Cari tutorial Excel/SPSS/Coding sesuai jurusanmu.</li>
+                            </ul>
+                        </div>
+                        <p class="mt-4 text-sm font-semibold text-blue-800 text-center italic">"Kuliah itu bukan cuma cari nilai, tapi cari pengalaman dan relasi."</p>`
+                }
+            ],
+            pmii: [
+                {
+                    title: "Apa itu PMII?",
+                    icon: "fa-star-and-crescent",
+                    color: "blue",
+                    content: `
+                        <div class="text-center mb-6">
+                            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md p-1">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Logo_PMII.png" alt="Logo PMII" class="w-full h-full object-contain">
+                            </div>
+                            <h3 class="text-2xl font-bold text-blue-900">Mengenal PMII</h3>
+                        </div>
+                        <p class="text-gray-700 text-center leading-relaxed">
+                            <strong>Pergerakan Mahasiswa Islam Indonesia (PMII)</strong> adalah organisasi mahasiswa ektra kampus terbesar di Indonesia yang berlandaskan Islam Ahlussunnah wal Jama'ah (Aswaja).
+                            <br><br>
+                            Didirikan pada 17 April 1960 di Surabaya, PMII hadir untuk mencetak pribadi muslim Indonesia yang bertaqwa, berbudi luhur, berilmu, cakap dan bertanggung jawab.
+                        </p>`
+                },
+                {
+                    title: "Nilai Dasar Pergerakan",
+                    icon: "fa-scale-balanced",
+                    color: "yellow",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Landasan Kami Berpikir</h3>
+                        <p class="text-gray-600 mb-4">Kami bergerak berdasarkan NDP (Nilai Dasar Pergerakan) yang bersumber dari Tauhid dan mewujud dalam 3 relasi:</p>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg shadow-sm">
+                                <h4 class="font-bold text-blue-900">Hablum Minallah</h4>
+                                <p class="text-xs text-gray-600">Hubungan vertikal dengan Allah SWT.</p>
+                            </div>
+                            <div class="p-3 bg-blue-50 border-l-4 border-yellow-400 rounded-r-lg shadow-sm">
+                                <h4 class="font-bold text-blue-900">Hablum Minannas</h4>
+                                <p class="text-xs text-gray-600">Hubungan kemanusiaan, menjunjung kesetaraan dan keadilan.</p>
+                            </div>
+                            <div class="p-3 bg-blue-50 border-l-4 border-green-500 rounded-r-lg shadow-sm">
+                                <h4 class="font-bold text-blue-900">Hablum Minal 'Alam</h4>
+                                <p class="text-xs text-gray-600">Hubungan dengan alam, menjaga kelestarian lingkungan.</p>
+                            </div>
+                        </div>`
+                },
+                {
+                    title: "Kegiatan Seru PMII",
+                    icon: "fa-bullhorn",
+                    color: "red",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Lebih dari Sekadar Kumpul</h3>
+                        <p class="text-gray-600 mb-4">Di PMII, kamu tidak akan bosan karena kami punya banyak wadah pengembangan:</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-center">
+                                <i class="fa-solid fa-comments text-2xl text-blue-600 mb-2"></i>
+                                <h4 class="font-bold text-sm">Diskusi Kritis</h4>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-center">
+                                <i class="fa-solid fa-chalkboard-user text-2xl text-yellow-500 mb-2"></i>
+                                <h4 class="font-bold text-sm">Pelatihan Softskill</h4>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-center">
+                                <i class="fa-solid fa-hand-holding-heart text-2xl text-red-500 mb-2"></i>
+                                <h4 class="font-bold text-sm">Aksi Sosial</h4>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-center">
+                                <i class="fa-solid fa-network-wired text-2xl text-green-500 mb-2"></i>
+                                <h4 class="font-bold text-sm">Networking</h4>
+                            </div>
+                        </div>`
+                },
+                {
+                    title: "Relevansi Bagi Maba",
+                    icon: "fa-seedling",
+                    color: "green",
+                    content: `
+                        <h3 class="text-xl font-bold text-blue-900 mb-3">Kenapa Kamu Harus Gabung?</h3>
+                        <img src="https://placehold.co/400x150/fef08a/1e3a8a?text=Level+Up+Diri+Kamu" alt="Level Up" class="w-full rounded-xl mb-4 border border-gray-200">
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><i class="fa-solid fa-check text-yellow-500 mt-1 mr-3"></i> <span><strong>Public Speaking:</strong> Terbiasa bicara di depan forum.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-yellow-500 mt-1 mr-3"></i> <span><strong>Leadership:</strong> Latihan memimpin kepanitiaan/organisasi.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-yellow-500 mt-1 mr-3"></i> <span><strong>Relasi Luas:</strong> Punya senior dan alumni di berbagai bidang yang siap membimbing.</span></li>
+                        </ul>`
+                },
+                {
+                    title: "Komisariat UNMA",
+                    icon: "fa-graduation-cap",
+                    color: "blue",
+                    content: `
+                        <div class="text-center mt-2">
+                            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md p-1">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Logo_PMII.png" alt="Logo PMII" class="w-full h-full object-contain">
+                            </div>
+                            <h3 class="text-2xl font-bold text-blue-900 mb-3">PMII Komisariat Universitas Mathla'ul Anwar</h3>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Kami bukan sekadar organisasi, kami adalah <strong>Keluarga</strong>. Di kampus UNMA, kami siap mendampingi proses adaptasi, akademik, hingga aktualisasi dirimu.
+                                <br><br>
+                                Siap menggali lebih dalam potensimu?
+                            </p>
+                            <div class="bg-blue-50 p-4 rounded-xl border-2 border-dashed border-blue-300">
+                                <p class="text-sm font-bold text-blue-800 italic">"Tangan Terkepal dan Maju ke Muka!"</p>
+                            </div>
+                        </div>`
+                }
+            ]
+        };
+
+        // Data Kuis Refleksi
+        const quizData = [
+            {
+                question: "Sebagai mahasiswa baru, apa fokus utamamu selama kuliah di UNMA?",
+                options: [
+                    "A. Lulus cepat dengan IPK Cumlaude",
+                    "B. Punya banyak relasi dan aktif di organisasi",
+                    "C. Mengembangkan bakat (Seni/Olahraga)",
+                    "D. Mengabdi dan turun langsung ke masyarakat",
+                    "E. Menyeimbangkan akademik dan organisasi"
+                ]
+            },
+            {
+                question: "Ketika melihat suatu masalah ketidakadilan di lingkungan sekitar, apa reaksi pertamamu?",
+                options: [
+                    "A. Menganalisis penyebabnya dari sudut pandang teori",
+                    "B. Berdiskusi dengan teman untuk mencari solusi",
+                    "C. Menggalang dana atau bantuan langsung",
+                    "D. Mengorganisir massa untuk bersuara/aksi",
+                    "E. Mendoakan agar masalah cepat selesai"
+                ]
+            },
+            {
+                question: "Skill apa yang paling ingin kamu kuasai setelah lulus kuliah?",
+                options: [
+                    "A. Menulis jurnal dan karya ilmiah",
+                    "B. Public speaking dan negosiasi",
+                    "C. Kepemimpinan dan manajemen tim",
+                    "D. Advokasi dan penyelesaian konflik",
+                    "E. Semua hal di atas"
+                ]
+            },
+            {
+                question: "Dalam sebuah forum atau kerja kelompok, posisi apa yang paling sering kamu ambil?",
+                options: [
+                    "A. Pencari data dan referensi (Think Tank)",
+                    "B. Moderator yang mengarahkan pembicaraan",
+                    "C. Ketua yang membagi tugas",
+                    "D. Pelaksana teknis yang mengeksekusi ide",
+                    "E. Pendengar yang memberikan kesimpulan akhir"
+                ]
+            },
+            {
+                question: "Bagi kamu, apa arti 'Teman' di dunia perkuliahan?",
+                options: [
+                    "A. Partner belajar untuk mencapai nilai terbaik",
+                    "B. Tempat berbagi keluh kesah",
+                    "C. Rekan kolaborasi untuk membuat karya/project",
+                    "D. Keluarga kedua yang saling melindungi",
+                    "E. Teman diskusi yang berani saling mengkritik demi kebaikan"
+                ]
+            }
+        ];
+
+        let currentModule = null;
+        let currentSlideIndex = 0;
+        let currentQuizIndex = 0;
+        let selectedOption = null;
+
+        // --- Fitur Musik ---
+        const bgMusic = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        let isMusicPlaying = false;
+
+        function forcePlayMusic() {
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-pause');
+                }).catch(e => {
+                    console.log("Browser memblokir autoplay penuh. Menunggu sedikit interaksi (scroll/gerak).", e);
+                });
+            }
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-music');
+            } else {
+                forcePlayMusic();
+            }
+            isMusicPlaying = !bgMusic.paused;
+        }
+
+        // Coba putar otomatis saat halaman selesai dimuat (jika diizinkan browser)
+        window.addEventListener('DOMContentLoaded', forcePlayMusic);
+
+        // Pemicu agresif: Putar musik otomatis bahkan hanya dengan sentuhan, klik, scroll, atau gerakan kursor pertama kali
+        const interactionEvents = ['click', 'touchstart', 'mousemove', 'scroll'];
+        const triggerMusicOnInteraction = () => {
+            forcePlayMusic();
+            // Hapus event listener setelah musik berhasil menyala agar tidak berat
+            if (isMusicPlaying) {
+                interactionEvents.forEach(evt => document.removeEventListener(evt, triggerMusicOnInteraction));
+            }
+        };
+
+        interactionEvents.forEach(evt => {
+            document.addEventListener(evt, triggerMusicOnInteraction, { once: true });
+        });
+
+        // Navigasi antar layar
+        function navigate(screenId) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById(`screen-${screenId}`).classList.add('active');
+        }
+
+        // Buka Modul
+        function openModule(moduleId) {
+            currentModule = moduleId;
+            currentSlideIndex = 0;
+            renderSlide();
+            navigate('module');
+        }
+
+        // Render Konten Slide
+        function renderSlide() {
+            const data = moduleData[currentModule];
+            const slide = data[currentSlideIndex];
+            const container = document.getElementById('module-content-container');
+            
+            // Progress dots
+            const progressContainer = document.getElementById('module-progress');
+            progressContainer.innerHTML = '';
+            data.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `w-2 h-2 rounded-full transition-all ${idx === currentSlideIndex ? 'bg-yellow-400 w-4' : 'bg-blue-400 opacity-50'}`;
+                progressContainer.appendChild(dot);
+            });
+
+            // Build UI
+            container.innerHTML = `
+                <div class="slide-content active">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-${slide.color || 'blue'}-100 flex items-center justify-center text-${slide.color || 'blue'}-600 text-xl mr-4">
+                            <i class="fa-solid ${slide.icon}"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">${slide.title}</h2>
+                    </div>
+                    <div class="slide-body">
+                        ${slide.content}
+                    </div>
+                </div>
+            `;
+
+            updateControls(data.length);
+        }
+
+        // Update Tombol Navigasi Slide
+        function updateControls(totalSlides) {
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            const btnFinish = document.getElementById('btn-finish');
+            const btnQuiz = document.getElementById('btn-quiz');
+
+            // Reset buttons
+            btnPrev.classList.add('hidden');
+            btnNext.classList.add('hidden');
+            btnFinish.classList.add('hidden');
+            btnQuiz.classList.add('hidden');
+
+            if (currentSlideIndex > 0) btnPrev.classList.remove('hidden');
+
+            if (currentSlideIndex < totalSlides - 1) {
+                btnNext.classList.remove('hidden');
+            } else {
+                if (currentModule === 'pmii') {
+                    btnQuiz.classList.remove('hidden');
+                } else {
+                    btnFinish.classList.remove('hidden');
+                }
+            }
+        }
+
+        function nextSlide() {
+            currentSlideIndex++;
+            renderSlide();
+        }
+
+        function prevSlide() {
+            currentSlideIndex--;
+            renderSlide();
+        }
+
+        function finishModule() {
+            navigate('menu');
+        }
+
+        // Mulai Kuis
+        function startQuiz() {
+            currentQuizIndex = 0;
+            renderQuiz();
+            navigate('quiz');
+        }
+
+        function renderQuiz() {
+            const quiz = quizData[currentQuizIndex];
+            document.getElementById('quiz-counter').textContent = `Pertanyaan ${currentQuizIndex + 1}/${quizData.length}`;
+            document.getElementById('quiz-question').textContent = quiz.question;
+            
+            const progressPct = ((currentQuizIndex) / quizData.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPct}%`;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            
+            selectedOption = null;
+            document.getElementById('btn-quiz-next').disabled = true;
+
+            quiz.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option w-full text-left p-4 rounded-xl font-medium text-gray-700 bg-white';
+                btn.textContent = opt;
+                btn.onclick = () => selectOption(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(index, btnElement) {
+            selectedOption = index;
+            document.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+            btnElement.classList.add('selected');
+            document.getElementById('btn-quiz-next').disabled = false;
+        }
+
+        function nextQuiz() {
+            if (currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                renderQuiz();
+            } else {
+                document.getElementById('quiz-progress-bar').style.width = '100%';
+                setTimeout(() => {
+                    navigate('result');
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
